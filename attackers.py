@@ -1,4 +1,3 @@
-# Modified from https://github.com/Harry24k/PGD-pytorch/blob/master/PGD.ipynb 
 from torch import nn
 import torch
 
@@ -40,27 +39,3 @@ def pgd_attack(model, images, labels, eps=0.1, alpha=2 / 255, iters=5, device='c
         new_ainput = torch.cat((new_ainput, image), dim=0)
 
     return new_ainput
-
-
-# Modified from https://github.com/Harry24k/FGSM-pytorch/blob/master/FGSM.ipynb
-def fgsm_attack(model, images, labels, eps=0.1):
-    use_cuda = True
-    device = torch.device("cuda" if use_cuda else "cpu")
-    loss = nn.CrossEntropyLoss()
-    images = images.to(device)
-    labels = labels.to(device)
-    images.requires_grad = True
-
-    output_abn = model(images)[0]
-    output_nor = 1 - output_abn
-    outputs = torch.cat((output_nor, output_abn), dim=1)
-
-    model.zero_grad()
-    # print(outputs.shape,labels.shape,'ii')
-    cost = -loss(outputs, labels.long()).to(device)
-    cost.backward()
-
-    attack_images = images + eps * images.grad.sign()
-    attack_images = torch.clamp(attack_images, 0, 1)
-
-    return attack_images
