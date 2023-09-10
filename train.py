@@ -117,31 +117,6 @@ class All_loss(torch.nn.Module):
 
 
 
-# def train(nloader, aloader, model, batch_size, optimizer, viz, device):
-#     with torch.set_grad_enabled(True):
-#         focalloss = FocalLoss()
-#         model.train()
-#
-#         ninput, nlabel = next(nloader)
-#         ainput, alabel = next(aloader)
-#         nlabel = nlabel.cuda()
-#         alabel = alabel.cuda()
-#
-#         input = torch.cat((ninput, ainput), 0).to(device)
-#
-#         score_abnormal2, score_normal2, feat_select_abn2, feat_select_normal2, scores2 = model(input, advbatch=False)
-#         #label = torch.cat((nlabel, alabel), 0)
-#         #score = torch.cat((score_normal2, score_abnormal2), 0)
-#         #score = score.squeeze()
-#        # print(score)
-#         #label = label.cuda()
-#         focal_loss = focalloss(score_normal2.squeeze(), score_abnormal2.squeeze(), nlabel, alabel)
-#         print('fl: ',focal_loss)
-#         optimizer.zero_grad()
-#         focal_loss.backward()
-#         optimizer.step()
-
-
 
 def train(nloader, aloader, model, batch_size, optimizer, viz, device):
     with torch.set_grad_enabled(True):
