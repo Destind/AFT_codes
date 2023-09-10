@@ -116,6 +116,37 @@ class All_loss(torch.nn.Module):
         return loss_total
 
 
+# def train(nloader, aloader, model, batch_size, optimizer, viz, device):
+#     with torch.set_grad_enabled(True):
+#         focalloss = FocalLoss()
+#         model.train()
+#
+#         ninput, nlabel = next(nloader)
+#         ainput, alabel = next(aloader)
+#         nlabel = nlabel.cuda()
+#         alabel = alabel.cuda()
+#
+#         input = torch.cat((ninput, ainput), 0).to(device)
+#
+#         score_abnormal2, score_normal2, feat_select_abn2, feat_select_normal2, scores2 = model(input, advbatch=False)
+#         ######
+#         scores = scores2.view(batch_size * 32 * 2, -1)
+#         scores = scores.squeeze()
+#         abn_scores = scores[batch_size * 32:]  # uncomment this if you apply sparse to abnormal score only
+#         nlabel = nlabel[0:batch_size]
+#         alabel = alabel[0:batch_size]
+#         loss_criterion = All_loss(0.0001, 100)
+#         loss_criterion_clean = loss_criterion(score_normal2, score_abnormal2, nlabel, alabel, feat_select_normal2,
+#                                               feat_select_abn2, viz)
+#         loss_sparse_clean = sparsity(abn_scores, batch_size, 8e-3)
+#         loss_smooth_clean = smooth(abn_scores, 8e-4)
+#         cost = loss_criterion_clean + loss_smooth_clean + loss_sparse_clean
+#         ######
+#         # focal_loss = focalloss(score_normal2.squeeze(), score_abnormal2.squeeze(), nlabel, alabel)
+#         # print('fl: ',focal_loss)
+#         optimizer.zero_grad()
+#         cost.backward()
+#         optimizer.step()
 
 
 def train(nloader, aloader, model, batch_size, optimizer, viz, device):
