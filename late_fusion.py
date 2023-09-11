@@ -21,9 +21,6 @@ model1 = Model(2048, 16)
 model1 = model1.to(device)
 model1.load_state_dict(torch.load(pretrain_pkl1))
 
-
-
-
 def atest(dataloader, model0, model1, args, device):
     gt = np.load(args.gt)
     with torch.no_grad():
@@ -49,10 +46,6 @@ def atest(dataloader, model0, model1, args, device):
             sig1 = logits1
             pred1 = torch.cat((pred1, sig1))
 
-        pred0 = minmaxscaler(pred0)
-
-
-        # #按分数距离融合
         pred2 = torch.cat((pred0, pred1), dim=1)
         thre5 = torch.ones_like(pred2)*0.35
         dist = abs(pred2-thre5)
@@ -65,32 +58,16 @@ def atest(dataloader, model0, model1, args, device):
         pred4 = list(pred4.cpu().detach().numpy())
         pred4 = np.repeat(np.array(pred4), 16)
 
+        fpr, tpr, threshold = roc_curve(list(gt), pred4)
+        rec_auc = auc(fpr, tpr)
+        print('fusion : ' + str(rec_auc))
 
-        #计算原始分数auc
-        pred0 = list(pred0.cpu().detach().numpy())
-        pred0 = np.repeat(np.array(pred0), 16)
-        fpr0, tpr0, threshold0 = roc_curve(list(gt), pred0)
-        rec_auc0 = auc(fpr0, tpr0)
-        print('\nauc0 : ' + str(rec_auc0))
-
-        pred1 = list(pred1.cpu().detach().numpy())
-        pred1 = np.repeat(np.array(pred1), 16)
-        fpr1, tpr1, threshold1 = roc_curve(list(gt), pred1)
-        rec_auc1 = auc(fpr1, tpr1)
-        print('auc1 : ' + str(rec_auc1))
-
-
-        fpr2, tpr2, threshold2 = roc_curve(list(gt), pred4)
-        rec_auc2 = auc(fpr2, tpr2)
-        print('融合 : ' + str(rec_auc2))
-
-
-        return  rec_auc2
+        return  rec_auc
 
 
 test_loader = DataLoader(Dataset(args, test_mode=True),
                          batch_size=1, shuffle=False,  ####
                          num_workers=0, pin_memory=False)
 
-auc2 = atest(test_loader, model0, model1, args, device)
+auc = atest(test_loader, model0, model1, args, device)
 
