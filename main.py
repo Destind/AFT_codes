@@ -5,7 +5,7 @@ from utils import save_best_record
 from model import Model
 from dataset import Dataset
 from train import train
-from test_10crop import test
+from test import test
 import option
 from tqdm import tqdm
 from utils import Visualizer
