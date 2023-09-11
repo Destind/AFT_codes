@@ -11,7 +11,7 @@ from tqdm import tqdm
 from utils import Visualizer
 from config import *
 
-viz = Visualizer(env='shanghai tech 10 crop', use_incoming_socket=False)
+viz = Visualizer(env='shanghai tech', use_incoming_socket=False)
 
 if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
