@@ -26,11 +26,11 @@ class Dataset(data.Dataset):
         self.list = list(open(self.rgb_list_file))
         if self.test_mode is False:
             if self.is_normal:
-                self.list = self.list[79:]
+                self.list = self.list[810:]
                 print('normal list')
                 print(self.list)
             else:
-                self.list = self.list[:79]
+                self.list = self.list[:810]
 
                 print('abnormal list')
                 print(self.list)
