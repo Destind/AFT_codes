@@ -11,5 +11,3 @@
 
 ## Testing
 1. run python late_fusion.py
-
-### Due to the large size of video features, we will upload video features and all ckpt models that have been run.
